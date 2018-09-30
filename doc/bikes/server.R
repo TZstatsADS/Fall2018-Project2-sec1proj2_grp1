@@ -11,17 +11,33 @@ library(shiny)
 library(rjson)
 library(leaflet)
 
-d <- fromJSON(file = "https://gbfs.citibikenyc.com/gbfs/en/station_status.json")
+live <- fromJSON(file = "https://gbfs.citibikenyc.com/gbfs/en/station_status.json")
+stations <- fromJSON(file = "https://gbfs.citibikenyc.com/gbfs/en/station_information.json")
+
+## data handling
+
+l <- length(stations$data$stations)
+
+stationsPos <- data.frame(lat = rep(NA, l), lng <- rep(NA, l))
+for(i in 1:l){
+  stationsPos$lat[i] <- stations$data$stations[i][[1]]$lat
+  stationsPos$lng[i] <- stations$data$stations[i][[1]]$lon
+}
 
 
 # Define server logic required to draw a histogram
 shinyServer(function(input, output,session) {
   output$map <- renderLeaflet({
-    leaflet() %>%
-      addTiles(
-        urlTemplate = "https://api.mapbox.com/v4/mapbox.streets/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoiZnJhcG9sZW9uIiwiYSI6ImNpa3Q0cXB5bTAwMXh2Zm0zczY1YTNkd2IifQ.rjnjTyXhXymaeYG6r2pclQ",
-        attribution = 'Maps by <a href="http://www.mapbox.com/">Mapbox</a>'
-      ) %>%
-      setView(lng = -73.97, lat = 40.75, zoom = 13)
+    nycIcon <- makeIcon(
+      iconUrl = "http://main.tvgu1jdkm2wvqi.maxcdn-edge.com/wp-content/uploads/2016/SLH/mlb_primary/new_york_yankees_1915-1946.png",
+      iconWidth = 20*215/230, iconHeight = 20,
+      iconAnchorX = 20*215/230/2, iconAnchorY = 16
+    )
+    
+    stationsPos %>% 
+      leaflet() %>%
+      addTiles() %>%
+      addMarkers(icon = nycIcon)
+
   })
 })
