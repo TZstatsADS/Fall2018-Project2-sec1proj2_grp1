@@ -24,7 +24,7 @@ for(i in 1:l){
   stationsPos$lng[i] <- stations$data$stations[i][[1]]$lon
 }
 
-
+asoashao
 # Define server logic required to draw a histogram
 shinyServer(function(input, output,session) {
   output$map <- renderLeaflet({
