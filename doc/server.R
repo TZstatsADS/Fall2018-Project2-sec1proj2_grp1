@@ -10,33 +10,47 @@
 library(shiny)
 library(rjson)
 library(leaflet)
+library(here)
 
 live <- fromJSON(file = "https://gbfs.citibikenyc.com/gbfs/en/station_status.json")
 stations <- fromJSON(file = "https://gbfs.citibikenyc.com/gbfs/en/station_information.json")
+
+## markers
+
+# http://www.mapito.net/map-marker-icons.html
+pics <- list.files(path="../figs/numbers/mapiconscollection",pattern="*.png", full.names=T, recursive=FALSE)
+
+begin <- as.numeric(as.matrix(gregexpr("_", pics)))
+endd <- as.numeric(as.matrix(gregexpr("\\.[^\\.]*$", pics)))
+picsNumber <- as.numeric(substring(pics, begin + 1, endd - 1))
+
+pics <- pics[order(picsNumber)]
+
+markers <- lapply(pics,  function(x) makeIcon(x))
+class(markers) <- "leaflet_icon_set"
+
 
 ## data handling
 
 l <- length(stations$data$stations)
 
-stationsPos <- data.frame(lat = rep(NA, l), lng <- rep(NA, l))
+s <- data.frame(lat = rep(NA, l), lng <- rep(NA, l))
 for(i in 1:l){
-  stationsPos$lat[i] <- stations$data$stations[i][[1]]$lat
-  stationsPos$lng[i] <- stations$data$stations[i][[1]]$lon
+  s$lat[i] <- stations$data$stations[i][[1]]$lat
+  s$lng[i] <- stations$data$stations[i][[1]]$lon
+  s$available[i] <- live$data$stations[i][[1]]$num_bikes_available
 }
 
 # Define server logic required to draw a histogram
 shinyServer(function(input, output,session) {
   output$map <- renderLeaflet({
-    nycIcon <- makeIcon(
-      iconUrl = "http://main.tvgu1jdkm2wvqi.maxcdn-edge.com/wp-content/uploads/2016/SLH/mlb_primary/new_york_yankees_1915-1946.png",
-      iconWidth = 20*215/230, iconHeight = 20,
-      iconAnchorX = 20*215/230/2, iconAnchorY = 16
-    )
-    
-    stationsPos %>% 
+
+    s %>% 
       leaflet() %>%
       addTiles() %>%
-      addMarkers(icon = nycIcon)
+      addMarkers(icon=~markers[s$available + 1]
+                 # , clusterOptions = markerClusterOptions()
+                 )
 
   })
 })
