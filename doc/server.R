@@ -52,6 +52,7 @@ shinyServer(function(input, output,session) {
         layers = "nexrad-n0r-900913",
         options = WMSTileOptions(format = "image/png", transparent = TRUE),
         attribution = "Weather data ?? 2012 IEM Nexrad"
+        # make it transparanet
       )
 
 
