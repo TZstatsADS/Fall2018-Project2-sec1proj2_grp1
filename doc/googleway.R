@@ -45,6 +45,10 @@ shinyApp(ui, server)
 ## End(Not run)
 
 
+<<<<<<< HEAD
+=======
+## required time
+>>>>>>> 61cdf671b2f0b53a8df53bf4329e66e550797b9c
 google_distance(origin = "Columbia University, New York",
                   destination = "Time Square, New York",
                   mode = "bicycling")
