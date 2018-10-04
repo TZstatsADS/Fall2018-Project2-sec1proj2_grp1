@@ -1,4 +1,4 @@
-crime <- read.csv("~/Desktop/ADS/NYPD.csv")
+crime <- read.csv("..//NYPD.csv")
 # Only in Manhattan
 crime.m <- subset(crime, crime$BORO_NM=="MANHATTAN")
 # Only Felony Crime
