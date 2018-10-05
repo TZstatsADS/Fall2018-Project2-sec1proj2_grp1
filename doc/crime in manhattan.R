@@ -13,7 +13,7 @@ leaflet(crime.m.f) %>%
 library(leaflet.extras)
 leaflet(crime.m.f) %>%
   addTiles() %>%
-  addWebGLHeatmap(lng = ~Longitude, lat = ~Latitude, size = 400, opacity = 0.4)
+  addWebGLHeatmap(lng = ~Longitude, lat = ~Latitude, size = 300, opacity = 0.4)
 
 
 crime.m.f$date <- as.Date(crime.m.f$CMPLNT_FR_DT, format = "%m/%d/%Y")
