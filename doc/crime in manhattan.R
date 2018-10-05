@@ -1,4 +1,4 @@
-crime <- read.csv("..//NYPD.csv")
+crime <- read.csv("../data/NYPD.csv")
 # Only in Manhattan
 crime.m <- subset(crime, crime$BORO_NM=="MANHATTAN")
 # Only Felony Crime
@@ -8,6 +8,13 @@ library(leaflet)
 leaflet(crime.m.f) %>%
   addTiles() %>%
   addCircleMarkers(lng = ~Longitude, lat = ~Latitude, radius = 0.1)
+
+## Gabriel :)
+library(leaflet.extras)
+leaflet(crime.m.f) %>%
+  addTiles() %>%
+  addWebGLHeatmap(lng = ~Longitude, lat = ~Latitude, size = 400, opacity = 0.4)
+
 
 crime.m.f$date <- as.Date(crime.m.f$CMPLNT_FR_DT, format = "%m/%d/%Y")
 cc<- subset(crime.m.f, date> "2016-12-31" & date < "2018-12-05")
