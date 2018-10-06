@@ -12,7 +12,7 @@ live <- fromJSON(file = "https://gbfs.citibikenyc.com/gbfs/en/station_status.jso
 stations <- fromJSON(file = "https://gbfs.citibikenyc.com/gbfs/en/station_information.json")
 load("../output/bikeRoutes.RData")
 
-crime <- read.csv("../data/NYPD.csv")
+crime <- read.csv("/Users/amon/Documents/GitHub/Fall2018-Project2-sec1_proj2_grp1/data/NYPD.csv")
 
 ## markers
 
@@ -86,8 +86,23 @@ shinyServer(function(input, output,session) {
         options = WMSTileOptions(format = "image/png", transparent = TRUE),
         attribution = "Weather data ?? 2012 IEM Nexrad"
         # make it transparanet
-      )
-
+      )%>%
+      addTiles() %>%
+      addLayersControl(overlayGroups = c("morning", "afternoon","evening",'night' ))%>%
+      addWebGLHeatmap(data = c1, lng = ~Longitude, lat = ~Latitude, 
+                      size = 500, opacity = 0.6, group = "morning")%>%
+      addWebGLHeatmap(data = c2, lng = ~Longitude, lat = ~Latitude, 
+                      size = 500, opacity = 0.6, group = "afternoon")%>%
+      addWebGLHeatmap(data = c3, lng = ~Longitude, lat = ~Latitude, 
+                      size = 500, opacity = 0.6, group = "evening")%>%
+      addWebGLHeatmap(data = c4, lng = ~Longitude, lat = ~Latitude, 
+                      size = 500, opacity = 0.6, group = "night")
+    
+    output$tableLive <- DT::renderDataTable({live})
+    
+    output$tableStations <- DT::renderDataTable({stations})
+    
+    output$tableCrime <- DT::renderDataTable({crime})
 
   })
   
@@ -108,6 +123,7 @@ shinyServer(function(input, output,session) {
       addWebGLHeatmap(data = c4, lng = ~Longitude, lat = ~Latitude, 
                       size = 500, opacity = 0.6, group = "night")
     })
+  
   
   
   
