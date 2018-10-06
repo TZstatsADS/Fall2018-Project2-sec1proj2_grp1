@@ -9,7 +9,8 @@ shinyUI(
     dashboardSidebar(),
     dashboardBody(
       tags$style(type = "text/css", "#map {height: calc(100vh - 80px) !important;}"),
-      leafletOutput("map")
+      #leafletOutput("map")
+      leafletOutput("map2")
     )
   )
 )
