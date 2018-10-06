@@ -3,12 +3,16 @@ library(rjson)
 library(leaflet)
 library(here)
 library(rgdal)
+library(chron)
+library(leaflet.extras)
 
 ## Data Import
 
 live <- fromJSON(file = "https://gbfs.citibikenyc.com/gbfs/en/station_status.json")
 stations <- fromJSON(file = "https://gbfs.citibikenyc.com/gbfs/en/station_information.json")
 load("../output/bikeRoutes.RData")
+
+crime <- read.csv("../data/NYPD.csv")
 
 ## markers
 
@@ -25,6 +29,7 @@ markers <- lapply(pics,  function(x) makeIcon(x, iconHeight = 3))
 class(markers) <- "leaflet_icon_set"
 
 
+
 ## data handling
 
 l <- length(stations$data$stations)
@@ -36,8 +41,36 @@ for(i in 1:l){
   s$available[i] <- live$data$stations[i][[1]]$num_bikes_available
 }
 
+# Crime Only in Manhattan
+crime.m <- subset(crime, crime$BORO_NM=="MANHATTAN")
+# Only Felony Crime
+crime.m.f <- subset(crime.m, crime.m$LAW_CAT_CD=="FELONY")
+crime.m.f$date <- as.Date(crime.m.f$CMPLNT_FR_DT, format = "%m/%d/%Y")
+# Only 2018 
+# cd<- subset(crime.m.f, date> "2017-12-31" & date < "2018-12-05")
+# Only street crime
+c.street <- subset(crime.m.f, crime.m.f$PREM_TYP_DESC=="STREET")
+crime.m.f$date <- as.Date(crime.m.f$CMPLNT_FR_DT, format = "%m/%d/%Y")
+c.street$time <- as.POSIXct(as.character(c.street$CMPLNT_FR_TM), format = "%H:%M")
+c.street$time <- chron(times. = as.character(c.street$CMPLNT_FR_TM))
+c.street$t <- c.street$time
+c.street$t <- as.character(c.street$t)
+c.street$t[c.street$time > "6:00:00" & c.street$time <"12:00:00"] <- "morning"
+c.street$t[c.street$time >= "12:00:00" & c.street$time <"18:00:00"] <- "afternoon"
+c.street$t[c.street$time >= "18:00:00" & c.street$time <"23:59:59"] <- "evening"
+c.street$t[c.street$time >= "0:00:00" & c.street$time <="6:00:00"] <- "night"
+
+c1 <- subset(c.street, c.street$t=="morning")
+c2 <- subset(c.street, c.street$t=="afternoon")
+c3 <- subset(c.street, c.street$t=="evening")
+c4 <- subset(c.street, c.street$t=="night")
+
 # Define server logic required to draw a histogram
 shinyServer(function(input, output,session) {
+  
+  #################################################################
+  ##### Panel 1 : summary  ########################################
+  #################################################################
   output$map <- renderLeaflet({
 
     s %>% 
@@ -57,4 +90,25 @@ shinyServer(function(input, output,session) {
 
 
   })
+  
+  
+  #################################################################
+  ##### Panel 2 : heatmap  ########################################
+  #################################################################
+  output$map2 <- renderLeaflet({
+    leaflet() %>%
+      addTiles() %>%
+      addLayersControl(overlayGroups = c("morning", "afternoon","evening",'night' ))%>%
+      addWebGLHeatmap(data = c1, lng = ~Longitude, lat = ~Latitude, 
+                      size = 500, opacity = 0.6, group = "morning")%>%
+      addWebGLHeatmap(data = c2, lng = ~Longitude, lat = ~Latitude, 
+                      size = 500, opacity = 0.6, group = "afternoon")%>%
+      addWebGLHeatmap(data = c3, lng = ~Longitude, lat = ~Latitude, 
+                      size = 500, opacity = 0.6, group = "evening")%>%
+      addWebGLHeatmap(data = c4, lng = ~Longitude, lat = ~Latitude, 
+                      size = 500, opacity = 0.6, group = "night")
+    })
+  
+  
+  
 })
