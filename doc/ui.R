@@ -35,7 +35,6 @@ ui <- dashboardPage(
       tabItem("tContact",
               h2("Contact Us"),
               h4("We are group 1!"),
-              h4(" "),
               h5("Gabriel Benedict: gb2661@columbia.edu"),
               h5("Hongyu Ji: hj2475@columbia.edu"),
               h5("Yunfan Li: yl3838@columbia.edu"),

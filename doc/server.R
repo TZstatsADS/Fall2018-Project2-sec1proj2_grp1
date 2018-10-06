@@ -12,7 +12,7 @@ live <- fromJSON(file = "https://gbfs.citibikenyc.com/gbfs/en/station_status.jso
 stations <- fromJSON(file = "https://gbfs.citibikenyc.com/gbfs/en/station_information.json")
 load("../output/bikeRoutes.RData")
 
-crime <- read.csv("/Users/amon/Documents/GitHub/Fall2018-Project2-sec1_proj2_grp1/data/NYPD.csv")
+crime <- read.csv("../data/NYPD.csv")
 
 ## markers
 

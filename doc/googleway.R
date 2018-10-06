@@ -5,14 +5,13 @@ library(rjson)
 #library(rgdal)
 library(dplyr)
 library(googleway)
-library(RgoogleMaps)
+#library(RgoogleMaps)
 
 ## Data Import
 
 live <- fromJSON(file = "https://gbfs.citibikenyc.com/gbfs/en/station_status.json")
 stations <- fromJSON(file = "https://gbfs.citibikenyc.com/gbfs/en/station_information.json")
 #load("../output/bikeRoutes.RData")
-
 
 ## data handling
 
@@ -23,10 +22,14 @@ for(i in 1:l){
   s$lat[i] <- stations$data$stations[i][[1]]$lat
   s$lng[i] <- stations$data$stations[i][[1]]$lon
   s$available[i] <- live$data$stations[i][[1]]$num_bikes_available
+  s$capacity[i] <- stations$data$stations[i][[1]]$capacity
 }
 
 # Remove 0 bikes stations
 s_nonzero <- s[-c(which(s$available==0)),]
+
+# Remove full bike stations
+s_nonfull <- s[-c(which(s$available == s$capacity)),]
 
 # User Input: current location and destination. current, destination
 current <- "Columbia University, New York"  # set for illustration
@@ -35,6 +38,7 @@ destination <- "Time Square, New York"
 # Create pairs of lattitude and longitute for all bike stations
 pairs_all <- mapply(c, s$lat, s$lng, SIMPLIFY = FALSE)
 pairs_nonzero <- mapply(c, s_nonzero$lat, s_nonzero$lng, SIMPLIFY = FALSE)
+pairs_nonfull <- mapply(c, s_nonfull$lat, s_nonfull$lng, SIMPLIFY = FALSE)
 ## Obtain the nearest citi bike station
 
 #current_to_stations <- data.frame()
@@ -95,19 +99,27 @@ df_route3 <- data.frame(polyline = r3$routes$overview_polyline$points)
 duration3 <- google_distance(origin = pairs_all[[nearest_s2]],
                              destination = destination,
                              mode = "bicycling")$rows$elements[[1]][1,2][1,1]
-
+#df_route3%>%leaflet()
 
 
 
 # Plot map and biking route
 google_map(location = current,
-           zoom = 10)%>%
+           zoom = 10) %>%
   add_polylines(data = df_route1, 
-                polyline = "polyline", stroke_colour = "#FF33D6") %>%
+                polyline = "polyline", 
+                stroke_colour = "#FF33D6",
+                stroke_weight = 7) %>%
   add_polylines(data = df_route2, 
-               polyline = "polyline") %>%
+               polyline = "polyline",
+               stroke_weight = 7) %>%
   add_polylines(data = df_route3, 
-                polyline = "polyline", stroke_colour = "#FF33D6") #%>%
+                polyline = "polyline", 
+                stroke_colour = "#FF33D6",
+                stroke_weight = 7) %>%
+  add_traffic()
+  add_bicycling()
+
   #add_markers(data = df_route1,lat = as.character(pairs_all[[nearest_s2]][1]), lon = as.character(pairs_all[[nearest_s2]][2]), marker_icon = pics[2]) 
   #TextOnStaticMap(lat = pairs_nonzero[[nearest_s1]][1], lon = pairs_nonzero[[nearest_s1]][2], labels = duration1, TrueProj = TRUE, FUN = text, add = FALSE)
   
@@ -229,11 +241,11 @@ server <- function(input, output, session){
     google_map(location = current,
                zoom = 10)%>%
       add_polylines(data = df_route1, 
-                    polyline = "polyline", stroke_colour = "#FF33D6") %>%
+                    polyline = "polyline", stroke_colour = "#FF33D6",stroke_weight = 7) %>%
       add_polylines(data = df_route2, 
-                    polyline = "polyline") %>%
+                    polyline = "polyline",stroke_weight = 7) %>%
       add_polylines(data = df_route3, 
-                    polyline = "polyline", stroke_colour = "#FF33D6") %>%
+                    polyline = "polyline", stroke_colour = "#FF33D6",stroke_weight = 7) %>%
       add_markers(data = df_route1,lat = as.character(pairs_all[[nearest_s2]][1]), lon = as.character(pairs_all[[nearest_s2]][2]), marker_icon = pics[2]) 
   }) }
 shinyApp(ui, server)
