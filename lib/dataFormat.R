@@ -1,4 +1,3 @@
-
 dataFormat <- function(){
   # This function obtains live citi bike stations info and returns coordinates of available 
   # citi bike stations
