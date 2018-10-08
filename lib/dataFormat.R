@@ -1,24 +1,15 @@
-dataFormat <- function(){
+dataFormat <- function(s){
   # This function obtains live citi bike stations info and returns coordinates of available 
   # citi bike stations
   #
-  # Input: none
+  # Input: live station data
   # Output: coordinate matrix of all stations 
   #         coordinate matrix of all stations with bikes
   #         coordinate matrix of all stations with available parking space
-  library(rjson)
   
-  ## Data Import
-  live <- fromJSON(file = "https://gbfs.citibikenyc.com/gbfs/en/station_status.json")
-  stations <- fromJSON(file = "https://gbfs.citibikenyc.com/gbfs/en/station_information.json")
-
   ## Data handling
   l <- length(stations$data$stations)
-  s <- data.frame(lat = rep(NA, l), lng <- rep(NA, l))
   for(i in 1:l){
-    s$lat[i] <- stations$data$stations[i][[1]]$lat
-    s$lng[i] <- stations$data$stations[i][[1]]$lon
-    s$available[i] <- live$data$stations[i][[1]]$num_bikes_available
     s$capacity[i] <- stations$data$stations[i][[1]]$capacity
   }
   
