@@ -4,31 +4,26 @@
 
 ![screenshot](doc/screenshot2.png)
 
-In this second project of GR5243 Applied Data Science, we develop a version 2.0 of an *Exploratory Data Analysis and Visualization* shiny app on a topic of your choice using [NYC Open Data](https://opendata.cityofnewyork.us/) or U.S. government open data released on the [data.gov](https://data.gov/) website. See [Project 2 Description](doc/project2_desc.md) for more details.  
+In this second project of GR5243 Applied Data Science, we develop a version 2.0 of an *Exploratory Data Analysis and Visualization* shiny app regarding city bikes in New York. See [Green Life NYC](https://wct2112.shinyapps.io/greenlivingnewyork/) (focussed on mapping) and [City Bike] (https://krozzzz.shinyapps.io/Final_vision/) (focussed on routing, although the the functionality did not work as it was tried in September 2018) for the previous works on the same subject. 
 
-The **learning goals** for this project is:
-
-- business intelligence for data science
-- study legacy codes and further development
-- data cleaning
-- data visualization
-- systems development/design life cycle
-- shiny app/shiny server
-
-*The above general statement about project 2 can be removed once you are finished with your project. It is optional.
-
-## Project Title Lorem ipsum dolor sit amet
+## Project BikeNY 
 Term: Spring 2018
 
 + Team #
 + **Projec title**: + Team members
-	+ team member 1
-	+ team member 2
-	+ team member 3
-	+ team member 4
-	+ team member 5
+	 + Gabriel Benedict: gb2661@columbia.edu"
+   + Hongyu Ji: hj2475@columbia.edu
+   + Yunfan Li: yl3838@columbia.edu
+   + Di Lu: dl3152@columbia.edu
+   + Amon Tokoro: at3250@columbia.edu
 
-+ **Project summary**: Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
++ **Project summary**: The web app aims at optimizing decision making with regards to the usage of City Bike in New York. First a routing utility is available, that allows users to enter an address and a destination and be guided as to where to walk to the closest City Bike non-empty station and where to drop off at the non-full station closest to destination. Additionally, live bike station data, bike routes, a rain radar and a heat map of the amount of felonies on the streets are available to allow the user to further refine her routing.
+
+  The data is available at the followingg links:
+  + [live Citybike station data](https://www.citibikenyc.com/system-data)
+  + [NYC bike routes](http://www.nyc.gov/html/dot/html/about/datafeeds.shtml)
+  + [live rain data](http://mesonet.agron.iastate.edu)
+  + [crime data]()
 
 + **Contribution statement**: ([default](doc/a_note_on_contributions.md)) All team members contributed equally in all stages of this project. All team members approve our work presented in this GitHub repository including this contributions statement. 
 
@@ -36,11 +31,11 @@ Following [suggestions](http://nicercode.github.io/blog/2013-04-05-projects/) by
 
 ```
 proj/
-├── app/
-├── lib/
-├── data/
-├── doc/
-└── output/
+????????? app/
+????????? lib/
+????????? data/
+????????? doc/
+????????? output/
 ```
 
 Please see each subfolder for a README file.
