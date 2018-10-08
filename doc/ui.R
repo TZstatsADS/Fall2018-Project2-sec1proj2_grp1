@@ -7,31 +7,43 @@ ui <- dashboardPage(
   dashboardHeader(title = "City Bike Maps"),
   dashboardSidebar(
     sidebarMenu(
-      menuItem("Maps",tabName = "tMaps"),
+      menuItem("Maps",tabName = "tMaps",icon = icon("globe")),
                
       menuItem("Data",
+               icon = icon("table"),
                menuSubItem("live", tabName = "tLive"),
                menuSubItem("stations",tabName = "tStations"),
                menuSubItem("crime", tabName = "tCrime")),
-      menuItem("Contact Us",tabName= "tContact")
-    
+      
+      menuItem("Contact Us",tabName= "tContact",icon = icon("envelope"))
     )
-  ),
+      ),
   dashboardBody(
     tabItems(
-      tabItem("tMaps",
+      tabItem(tabName ="tMaps",
               h2("City Bike Maps with Weather Rador"),
               h4("Type in your location and destination."),
-              leafletOutput("map")),
-      tabItem(tabName = "tLive",
-              h3("URL: https://gbfs.citibikenyc.com/gbfs/en/station_status.json")
+              leafletOutput("map")
               ),
-      tabItem(tabName = "tStations",
-              h3("URL: https://gbfs.citibikenyc.com/gbfs/en/station_information.json")
+      
+      tabItem(tabName = "tLive",
+              h4("Citybikenyc.com: "),
+              h4("https://www.citibikenyc.com/system-data"),
+              h4("FileURL: "),
+              h4("https://gbfs.citibikenyc.com/gbfs/en/station_status.json")
+              ),
+     
+       tabItem(tabName = "tStations",
+              h4("Citybikenyc.com: "),
+              h4("https://www.citibikenyc.com/system-data"),
+              h4("FileURL: "),
+              h4("https://gbfs.citibikenyc.com/gbfs/en/station_information.json")
       ),
-      tabItem(tabName = "tCrime",
+     
+       tabItem(tabName = "tCrime",
               fluidRow(column(12, DT::dataTableOutput("tableCrime")))
       ),
+      
       tabItem("tContact",
               h2("Contact Us"),
               h4("We are group 1!"),
