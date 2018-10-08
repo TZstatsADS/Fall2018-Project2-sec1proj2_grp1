@@ -32,8 +32,8 @@ class(markers) <- "leaflet_icon_set"
 
 ## data handling
 
+# stations
 l <- length(stations$data$stations)
-
 s <- data.frame(lat = rep(NA, l), lng <- rep(NA, l))
 for(i in 1:l){
   s$lat[i] <- stations$data$stations[i][[1]]$lat
@@ -41,15 +41,15 @@ for(i in 1:l){
   s$available[i] <- live$data$stations[i][[1]]$num_bikes_available
 }
 
-# Crime Only in Manhattan
+# street felonies in Manhattan
 crime.m <- subset(crime, crime$BORO_NM=="MANHATTAN")
-# Only Felony Crime
 crime.m.f <- subset(crime.m, crime.m$LAW_CAT_CD=="FELONY")
 crime.m.f$date <- as.Date(crime.m.f$CMPLNT_FR_DT, format = "%m/%d/%Y")
 # Only 2018 
 # cd<- subset(crime.m.f, date> "2017-12-31" & date < "2018-12-05")
 # Only street crime
 c.street <- subset(crime.m.f, crime.m.f$PREM_TYP_DESC=="STREET")
+
 crime.m.f$date <- as.Date(crime.m.f$CMPLNT_FR_DT, format = "%m/%d/%Y")
 c.street$time <- as.POSIXct(as.character(c.street$CMPLNT_FR_TM), format = "%H:%M")
 c.street$time <- chron(times. = as.character(c.street$CMPLNT_FR_TM))
@@ -97,15 +97,14 @@ shinyServer(function(input, output,session) {
                       size = 500, opacity = 0.6, group = "evening")%>%
       addWebGLHeatmap(data = c4, lng = ~Longitude, lat = ~Latitude, 
                       size = 500, opacity = 0.6, group = "night")
-    
-    output$tableLive <- DT::renderDataTable({live})
-    
-    output$tableStations <- DT::renderDataTable({stations})
-    
-    output$tableCrime <- DT::renderDataTable({crime})
 
   })
   
+  output$tableLive <- DT::renderDataTable({live})
+  
+  output$tableStations <- DT::renderDataTable({stations})
+  
+  output$tableCrime <- DT::renderDataTable({crime})
   
   #################################################################
   ##### Panel 2 : heatmap  ########################################
