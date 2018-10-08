@@ -68,9 +68,6 @@ c4 <- subset(c.street, c.street$t=="night")
 # Define server logic required to draw a histogram
 shinyServer(function(input, output,session) {
   
-  #################################################################
-  ##### Panel 1 : summary  ########################################
-  #################################################################
   output$map <- renderLeaflet({
 
     s %>% 
@@ -88,13 +85,13 @@ shinyServer(function(input, output,session) {
         # make it transparanet
       )%>%
       addTiles() %>%
-      addLayersControl(overlayGroups = c("morning", "afternoon","evening",'night' ))%>%
+      addLayersControl(overlayGroups = c("morning", "afternoon","evening",'night' )) %>%
       addWebGLHeatmap(data = c1, lng = ~Longitude, lat = ~Latitude, 
-                      size = 500, opacity = 0.6, group = "morning")%>%
+                      size = 500, opacity = 0.6, group = "morning") %>%
       addWebGLHeatmap(data = c2, lng = ~Longitude, lat = ~Latitude, 
-                      size = 500, opacity = 0.6, group = "afternoon")%>%
+                      size = 500, opacity = 0.6, group = "afternoon") %>%
       addWebGLHeatmap(data = c3, lng = ~Longitude, lat = ~Latitude, 
-                      size = 500, opacity = 0.6, group = "evening")%>%
+                      size = 500, opacity = 0.6, group = "evening") %>%
       addWebGLHeatmap(data = c4, lng = ~Longitude, lat = ~Latitude, 
                       size = 500, opacity = 0.6, group = "night")
 
@@ -105,25 +102,5 @@ shinyServer(function(input, output,session) {
   output$tableStations <- DT::renderDataTable({stations})
   
   output$tableCrime <- DT::renderDataTable({crime})
-  
-  #################################################################
-  ##### Panel 2 : heatmap  ########################################
-  #################################################################
-  output$map2 <- renderLeaflet({
-    leaflet() %>%
-      addTiles() %>%
-      addLayersControl(overlayGroups = c("morning", "afternoon","evening",'night' ))%>%
-      addWebGLHeatmap(data = c1, lng = ~Longitude, lat = ~Latitude, 
-                      size = 500, opacity = 0.6, group = "morning")%>%
-      addWebGLHeatmap(data = c2, lng = ~Longitude, lat = ~Latitude, 
-                      size = 500, opacity = 0.6, group = "afternoon")%>%
-      addWebGLHeatmap(data = c3, lng = ~Longitude, lat = ~Latitude, 
-                      size = 500, opacity = 0.6, group = "evening")%>%
-      addWebGLHeatmap(data = c4, lng = ~Longitude, lat = ~Latitude, 
-                      size = 500, opacity = 0.6, group = "night")
-    })
-  
-  
-  
   
 })
