@@ -36,9 +36,14 @@ current <- "Columbia University, New York"  # set for illustration
 destination <- "Time Square, New York"
 
 # Create pairs of lattitude and longitute for all bike stations
-pairs_all <- mapply(c, s$lat, s$lng, SIMPLIFY = FALSE)
-pairs_nonzero <- mapply(c, s_nonzero$lat, s_nonzero$lng, SIMPLIFY = FALSE)
-pairs_nonfull <- mapply(c, s_nonfull$lat, s_nonfull$lng, SIMPLIFY = FALSE)
+#pairs_all <- mapply(c, s$lat, s$lng, SIMPLIFY = FALSE)
+pairs_all <- cbind(s$lat, s$lng)
+#pairs_nonzero <- mapply(c, s_nonzero$lat, s_nonzero$lng, SIMPLIFY = FALSE)
+pairs_nonzero <- cbind(s_nonzero$lat, s_nonzero$lng)
+#pairs_nonfull <- mapply(c, s_nonfull$lat, s_nonfull$lng, SIMPLIFY = FALSE)
+pairs_nonfull <- cbind(s_nonfull$lat, s_nonfull$lng)
+
+
 ## Obtain the nearest citi bike station
 
 #current_to_stations <- data.frame()
