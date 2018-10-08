@@ -1,10 +1,16 @@
-library(shiny)
-library(rjson)
-library(leaflet)
-library(here)
-library(rgdal)
-library(chron)
-library(leaflet.extras)
+packages <- c("shiny", 
+              "rjson", 
+              "leaflet", 
+              "rgdal", 
+              "chron", 
+              "leaflet.extras")
+
+# Install and load packages only if needed
+package.check <- lapply(packages, FUN = function(x) {
+  if (!require(x, character.only = T)) install.packages(x)
+  if (! (x %in% (.packages() )))  library(x, character.only = T)
+})
+
 
 ## Data Import
 

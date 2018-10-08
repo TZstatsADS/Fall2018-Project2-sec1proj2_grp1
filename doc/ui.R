@@ -1,7 +1,16 @@
-library(shiny)
-library(shinydashboard)
-library(leaflet)
-library(DT)
+packages <- c("shiny", 
+              "shinydashboard", 
+              "leaflet", 
+              "DT")
+
+# Install and load packages only if needed
+package.check <- lapply(packages, FUN = function(x) {
+  if (!require(x, character.only = T)) install.packages(x)
+  if (! (x %in% (.packages() )))  library(x, character.only = T)
+})
+
+
+
 
 ui <- 
   dashboardPage(
