@@ -1,6 +1,4 @@
 library(mapsapi)
-library(xml2)
-library(leaflet)
 source("../lib/calculateDistance.R")
 
 time_to_text = function(t){

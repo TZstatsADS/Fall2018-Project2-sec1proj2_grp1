@@ -107,20 +107,12 @@ shinyServer(function(input, output, session) {
                       size = 500, opacity = 0.6, group = "night")
 
   })
-  
-  routing_config = reactive({
-    start = input$start
-    destination = input$destination
-    submit = input$submit
-    return(list(start = start, destination = destination, submit = submit))
+
+  observeEvent(input$submit, {
+    leafletProxy("map") %>% 
+      clearMarkers() %>%
+      routing(strt = input$start, dstn = input$destination, c = c)
   })
-  
-  observe(
-    if(input$submit[1] > 0){
-      leafletProxy("map") %>% 
-        routing(strt = input$start, dstn = input$destination, c = c)
-    }
-  )
   
   output$tableLive <- DT::renderDataTable({live})
   
