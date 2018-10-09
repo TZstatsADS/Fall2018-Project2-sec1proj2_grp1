@@ -12,6 +12,9 @@ dataFormat <- function(s){
   
   # Remove full bike stations
   s_nonfull <- s[-c(which(s$available == s$capacity)),]
+  if (nrow(s_nonfull) == 0){
+    s_nonfull = s
+  }
   
   # Create pairs of lattitude and longitute for all bike stations
   pairs_all <- cbind(s$lat, s$lng)

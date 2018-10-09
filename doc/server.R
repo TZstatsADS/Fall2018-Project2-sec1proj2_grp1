@@ -108,29 +108,19 @@ shinyServer(function(input, output, session) {
 
   })
   
-  Sstatus <- reactive({
-    status<-data_Time[[as.numeric(input$TimeRange)]]
-    nuba<-status$Num_bikes_available
-    nuda<-status$Num_dock_available
-    slat_a<-slat[nuba!=0&nuda!=0]
-    slon_a<-slon[nuba!=0&nuda!=0]
-    sname_a<-sname[nuba!=0&nuda!=0]
-    nuba_a<-nuba[nuba!=0&nuda!=0]
-    nuda_a<-nuda[nuba!=0&nuda!=0]
-    slat_u<-slat[nuba==0|nuda==0]
-    slon_u<-slon[nuba==0|nuda==0]
-    sname_u<-sname[nuba==0|nuda==0]
-    nuba_u<-nuba[nuba==0|nuda==0]
-    nuda_u<-nuda[nuba==0|nuda==0]
-    S_a<-data.frame(slat_a,slon_a,nuba_a,nuda_a,sname_a)
-    S_u<-data.frame(slat_u,slon_u,nuba_u,nuda_u,sname_u)
-    return(list(S_a=S_a,S_u=S_u))
+  routing_config = reactive({
+    start = input$start
+    destination = input$destination
+    submit = input$submit
+    return(list(start = start, destination = destination, submit = submit))
   })
   
-  if(input$submit[1] > 0){
-    leafletProxy("map") %>% 
-      routing(strt = input$start, dstn = input$destination, c = c)
-  }
+  observe(
+    if(input$submit[1] > 0){
+      leafletProxy("map") %>% 
+        routing(strt = input$start, dstn = input$destination, c = c)
+    }
+  )
   
   output$tableLive <- DT::renderDataTable({live})
   

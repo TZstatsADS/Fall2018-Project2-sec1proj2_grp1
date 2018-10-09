@@ -34,7 +34,6 @@ ui <-
                 # h2("City Bike Maps with Weather Rador"),
                 # h4("Type in your location and destination."),
                 tags$style(type = "text/css", "#map {height: calc(100vh - 80px) !important;}"),
-<<<<<<< HEAD
                 leafletOutput("map"), 
                 
                 absolutePanel(id = "controls", class = "panel panel-default", fixed = TRUE,
@@ -49,15 +48,6 @@ ui <-
                               
                               actionButton("submit","Submit",icon = icon("refresh"))
                               )
-=======
-                leafletOutput("map"),
-                # absolutePanel(
-                #   bottom = 20, right = 20, width = 300,
-                #   draggable = TRUE,
-                #   textInput(inputID = "current", label = h3('Current Location')),
-                #   textInput(inputID = "final", label = h3('Destination')),
-                #   submitButton(text = "Submit"))
->>>>>>> fb5765552e5f4beb936c41ade8059688273c0bd7
                 ),
         
         tabItem(tabName = "tLive",
