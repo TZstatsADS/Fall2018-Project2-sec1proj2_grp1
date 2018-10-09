@@ -3,16 +3,12 @@ packages <- c("shiny",
               "leaflet", 
               "rgdal", 
               "chron", 
-<<<<<<< HEAD
               "leaflet.extras",
               "htmltools",
               "htmlwidgets")
 
-=======
-              "leaflet.extras")
 source("../lib/dataFormat.R")
 source("../lib/routing.R")
->>>>>>> 9a142d7c6d0db19f2be07a35b4f5934e50f33fd7
 
 # Install and load packages only if needed
 package.check <- lapply(packages, FUN = function(x) {
@@ -107,17 +103,19 @@ shinyServer(function(input, output, session) {
       addPolygons(data=routes, weight=1, col = 'green', 
                   smoothFactor = 1000, group = "bike routes",
                   opacity = 1, noClip = T) %>%
-      addWMSTiles(
-        "http://mesonet.agron.iastate.edu/cgi-bin/wms/nexrad/n0r.cgi",
-        layers = "nexrad-n0r-900913",
-        options = WMSTileOptions(format = "image/png", transparent = TRUE),
-        attribution = "Weather data ?? 2012 IEM Nexrad",
-        group = "rain radar"
-        # make it transparanet
-      )%>%
+      # addWMSTiles(
+      #   "http://mesonet.agron.iastate.edu/cgi-bin/wms/nexrad/n0r.cgi",
+      #   layers = "nexrad-n0r-900913",
+      #   options = WMSTileOptions(format = "image/png", transparent = TRUE),
+      #   attribution = "Weather data ?? 2012 IEM Nexrad",
+      #   group = "rain radar"
+      #   # make it transparanet
+      # )%>%
       addLayersControl(
         baseGroups = c("crimes - morning", "crimes - afternoon","crimes - evening",'crimes - night'),
-        overlayGroups = c("bike routes", "rain radar"),
+        overlayGroups = c("bike routes"
+                          # , "rain radar"
+                          ),
         options = layersControlOptions(collapsed = FALSE)) %>%
       addWebGLHeatmap(data = c1, lng = ~Longitude, lat = ~Latitude, 
                       size = 700, opacity = 0.6, group = "crimes - morning") %>%
@@ -127,7 +125,9 @@ shinyServer(function(input, output, session) {
                       size = 700, opacity = 0.6, group = "crimes - evening") %>%
       addWebGLHeatmap(data = c4, lng = ~Longitude, lat = ~Latitude, 
                       size = 700, opacity = 0.6, group = "crimes - night") %>%
-      hideGroup(c("bike routes", "crimes - morning", "crimes - afternoon","crimes - evening",'crimes - night', "rain radar"))
+      hideGroup(c("bike routes", "crimes - morning", "crimes - afternoon","crimes - evening",'crimes - night'
+                  # , "rain radar"
+                  ))
 
   })
   
@@ -145,9 +145,7 @@ shinyServer(function(input, output, session) {
     }
   )
   
-  output$tableLive <- DT::renderDataTable({live})
-  
-  output$tableStations <- DT::renderDataTable({stations})
+  output$tableLive <- DT::renderDataTable({s})
   
   output$tableCrime <- DT::renderDataTable({crime})
   
