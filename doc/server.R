@@ -3,14 +3,16 @@ packages <- c("shiny",
               "leaflet", 
               "rgdal", 
               "chron", 
-              "leaflet.extras")
+              "leaflet.extras",
+              "htmltools",
+              "htmlwidgets")
+
 
 # Install and load packages only if needed
 package.check <- lapply(packages, FUN = function(x) {
   if (!require(x, character.only = T)) install.packages(x)
   if (! (x %in% (.packages() )))  library(x, character.only = T)
 })
-
 
 ## Data Import
 
@@ -40,12 +42,23 @@ class(markers) <- "leaflet_icon_set"
 
 # stations
 l <- length(stations$data$stations)
-s <- data.frame(lat = rep(NA, l), lng <- rep(NA, l))
+s <- data.frame(lat = rep(NA, l), lng = rep(NA, l))
 for(i in 1:l){
   s$lat[i] <- stations$data$stations[i][[1]]$lat
   s$lng[i] <- stations$data$stations[i][[1]]$lon
   s$available[i] <- live$data$stations[i][[1]]$num_bikes_available
 }
+
+# ##  Create cuts:
+# x_c <- cut(s$lat, 60)
+# y_c <- cut(s$lng, 60)
+# 
+# ##  Calculate joint counts at cut levels:
+# z <- table(x_c, y_c)
+# 
+# library(plot3D)
+# 
+# hist3D(z = as.matrix(s))
 
 # street felonies in Manhattan
 crime.m <- subset(crime, crime$BORO_NM=="MANHATTAN")
@@ -81,25 +94,31 @@ shinyServer(function(input, output,session) {
       addProviderTiles(providers$Stamen.Toner) %>%
       addMarkers(icon=~markers[s$available + 1]
                  , clusterOptions = markerClusterOptions()
-                 ) %>% 
-      addPolygons(data=routes,weight=3,col = 'green') %>%
+                 ) %>%
+      addPolygons(data=routes, weight=1, col = 'green', 
+                  smoothFactor = 1000, group = "bike routes",
+                  opacity = 1, noClip = T) %>%
       addWMSTiles(
         "http://mesonet.agron.iastate.edu/cgi-bin/wms/nexrad/n0r.cgi",
         layers = "nexrad-n0r-900913",
         options = WMSTileOptions(format = "image/png", transparent = TRUE),
-        attribution = "Weather data ?? 2012 IEM Nexrad"
+        attribution = "Weather data ?? 2012 IEM Nexrad",
+        group = "rain radar"
         # make it transparanet
       )%>%
-      addTiles() %>%
-      addLayersControl(overlayGroups = c("morning", "afternoon","evening",'night' )) %>%
+      addLayersControl(
+        baseGroups = c("crimes - morning", "crimes - afternoon","crimes - evening",'crimes - night'),
+        overlayGroups = c("bike routes", "rain radar"),
+        options = layersControlOptions(collapsed = FALSE)) %>%
       addWebGLHeatmap(data = c1, lng = ~Longitude, lat = ~Latitude, 
-                      size = 500, opacity = 0.6, group = "morning") %>%
+                      size = 700, opacity = 0.6, group = "crimes - morning") %>%
       addWebGLHeatmap(data = c2, lng = ~Longitude, lat = ~Latitude, 
-                      size = 500, opacity = 0.6, group = "afternoon") %>%
+                      size = 700, opacity = 0.6, group = "crimes - afternoon") %>%
       addWebGLHeatmap(data = c3, lng = ~Longitude, lat = ~Latitude, 
-                      size = 500, opacity = 0.6, group = "evening") %>%
+                      size = 700, opacity = 0.6, group = "crimes - evening") %>%
       addWebGLHeatmap(data = c4, lng = ~Longitude, lat = ~Latitude, 
-                      size = 500, opacity = 0.6, group = "night")
+                      size = 700, opacity = 0.6, group = "crimes - night") %>%
+      hideGroup(c("bike routes", "crimes - morning", "crimes - afternoon","crimes - evening",'crimes - night', "rain radar"))
 
   })
   
