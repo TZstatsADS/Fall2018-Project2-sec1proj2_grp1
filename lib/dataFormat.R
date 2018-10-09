@@ -7,16 +7,6 @@ dataFormat <- function(s){
   #         coordinate matrix of all stations with bikes
   #         coordinate matrix of all stations with available parking space
   
-  ## Data handling
-<<<<<<< HEAD
-  l <- length(stations$data$stations)
-  for(i in 1:l){
-=======
-  for(i in 1:nrow(s)){
->>>>>>> 7c948f69113931f2f94de817271e14617f2c3bb6
-    s$capacity[i] <- stations$data$stations[i][[1]]$capacity
-  }
-  
   # Remove 0 bikes stations
   s_nonzero <- s[-c(which(s$available==0)),]
   

@@ -34,7 +34,20 @@ ui <-
                 # h2("City Bike Maps with Weather Rador"),
                 # h4("Type in your location and destination."),
                 tags$style(type = "text/css", "#map {height: calc(100vh - 80px) !important;}"),
-                leafletOutput("map")
+                leafletOutput("map"), 
+                
+                absolutePanel(id = "controls", class = "panel panel-default", fixed = TRUE,
+                              draggable = TRUE, top = 60, left = "auto", right = 20, bottom = "auto",
+                              width = 330, height = "auto",
+                              # h3() is the title for the first map.
+                              h3("Citi Bike Route"),
+                              
+                              textInput("start", "Your Starting Point", value = NA, width = NULL, placeholder = NULL),
+                              
+                              textInput("destination", "Your Destination", value = NA, width = NULL, placeholder = NULL),
+                              
+                              actionButton("submit","Submit",icon = icon("refresh"))
+                              )
                 ),
         
         tabItem(tabName = "tLive",

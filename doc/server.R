@@ -4,6 +4,8 @@ packages <- c("shiny",
               "rgdal", 
               "chron", 
               "leaflet.extras")
+source("../lib/dataFormat.R")
+source("../lib/routing.R")
 
 # Install and load packages only if needed
 package.check <- lapply(packages, FUN = function(x) {
@@ -35,7 +37,6 @@ markers <- lapply(pics,  function(x) makeIcon(x, iconHeight = 3))
 class(markers) <- "leaflet_icon_set"
 
 
-
 ## data handling
 
 # stations
@@ -45,7 +46,11 @@ for(i in 1:l){
   s$lat[i] <- stations$data$stations[i][[1]]$lat
   s$lng[i] <- stations$data$stations[i][[1]]$lon
   s$available[i] <- live$data$stations[i][[1]]$num_bikes_available
+  s$capacity <- stations$data$stations[i][[1]]$capacity
 }
+# Convert the dataframe to list of 3 dataframes representing the 
+# station with bikes, docks and all.
+c <- dataFormat(s)
 
 # street felonies in Manhattan
 crime.m <- subset(crime, crime$BORO_NM=="MANHATTAN")
@@ -72,7 +77,7 @@ c3 <- subset(c.street, c.street$t=="evening")
 c4 <- subset(c.street, c.street$t=="night")
 
 # Define server logic required to draw a histogram
-shinyServer(function(input, output,session) {
+shinyServer(function(input, output, session) {
   
   output$map <- renderLeaflet({
 
@@ -102,6 +107,30 @@ shinyServer(function(input, output,session) {
                       size = 500, opacity = 0.6, group = "night")
 
   })
+  
+  Sstatus <- reactive({
+    status<-data_Time[[as.numeric(input$TimeRange)]]
+    nuba<-status$Num_bikes_available
+    nuda<-status$Num_dock_available
+    slat_a<-slat[nuba!=0&nuda!=0]
+    slon_a<-slon[nuba!=0&nuda!=0]
+    sname_a<-sname[nuba!=0&nuda!=0]
+    nuba_a<-nuba[nuba!=0&nuda!=0]
+    nuda_a<-nuda[nuba!=0&nuda!=0]
+    slat_u<-slat[nuba==0|nuda==0]
+    slon_u<-slon[nuba==0|nuda==0]
+    sname_u<-sname[nuba==0|nuda==0]
+    nuba_u<-nuba[nuba==0|nuda==0]
+    nuda_u<-nuda[nuba==0|nuda==0]
+    S_a<-data.frame(slat_a,slon_a,nuba_a,nuda_a,sname_a)
+    S_u<-data.frame(slat_u,slon_u,nuba_u,nuda_u,sname_u)
+    return(list(S_a=S_a,S_u=S_u))
+  })
+  
+  if(input$submit[1] > 0){
+    leafletProxy("map") %>% 
+      routing(strt = input$start, dstn = input$destination, c = c)
+  }
   
   output$tableLive <- DT::renderDataTable({live})
   

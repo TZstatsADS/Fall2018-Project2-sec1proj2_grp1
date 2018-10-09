@@ -17,7 +17,7 @@ time_to_text = function(t){
   return(paste(ret, " ", t %% 60, " sec", sep = ""))
 }
 
-routing <- function(strt, dstn, map, key="AIzaSyD1wa1olHRXPNPo7_6zEyZvU2xSZxGEMAM"){
+routing <- function(map, strt, dstn, c, key="AIzaSyD1wa1olHRXPNPo7_6zEyZvU2xSZxGEMAM"){
   # Retrieve the coordinates of starting point and destination.
   pnt_doc = mp_geocode(addresses = c(strt, dstn), region = "New York, NY", key = key)
   pnt = mp_get_points(pnt_doc)
@@ -25,9 +25,8 @@ routing <- function(strt, dstn, map, key="AIzaSyD1wa1olHRXPNPo7_6zEyZvU2xSZxGEMA
   dstn_coor = as.vector(as(pnt$pnt[2], "Spatial")@coords)  # (lon, lat)
   
   # Calculate the distance and get the closest available pickup & dropoff stations.
-  start_time <- Sys.time()
-  pickup = calculateDistance(strt_coor[c(2, 1)], mode = "pickup")
-  dropoff = calculateDistance(dstn_coor[c(2, 1)], mode = "dropoff")
+  pickup = calculateDistance(strt_coor[c(2, 1)], c = c, mode = "pickup")
+  dropoff = calculateDistance(dstn_coor[c(2, 1)], c = c, mode = "dropoff")
   
   # Send Request to the server and retrieve the route.
   # Pickup route. Original xml doc.
@@ -95,5 +94,3 @@ routing <- function(strt, dstn, map, key="AIzaSyD1wa1olHRXPNPo7_6zEyZvU2xSZxGEMA
       )
   return(map)
 }
-
-routing(strt = "Columbia University", dstn = "Wall Street", map = leaflet() %>% addProviderTiles("OpenStreetMap"))
