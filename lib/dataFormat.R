@@ -8,8 +8,7 @@ dataFormat <- function(s){
   #         coordinate matrix of all stations with available parking space
   
   ## Data handling
-  l <- length(stations$data$stations)
-  for(i in 1:l){
+  for(i in 1:nrow(s)){
     s$capacity[i] <- stations$data$stations[i][[1]]$capacity
   }
   

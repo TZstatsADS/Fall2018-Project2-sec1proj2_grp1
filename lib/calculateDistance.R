@@ -1,6 +1,6 @@
 source("dataFormat.R")
 
-calculateDistance <- function(station_data = s, coordinates, mode){
+calculateDistance <- function(coordinates, mode, s){
   # This function calculates the distances from one location to all citi bike stations 
   # and returns the nearest citi bike station coordinate
   #
