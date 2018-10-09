@@ -37,16 +37,17 @@ ui <-
                 leafletOutput("map"), 
                 
                 absolutePanel(id = "controls", class = "panel panel-default", fixed = TRUE,
-                              draggable = TRUE, top = 60, left = "auto", right = 20, bottom = "auto",
-                              width = 330, height = "auto",
-                              # h3() is the title for the first map.
-                              h3("Citi Bike Route"),
-                              
-                              textInput("start", "Your Starting Point", value = NA, width = NULL, placeholder = NULL),
-                              
-                              textInput("destination", "Your Destination", value = NA, width = NULL, placeholder = NULL),
-                              
-                              actionButton("submit","Submit",icon = icon("refresh"))
+                              draggable = TRUE, cursor = "move", top = "auto", left = "auto", right = 20, bottom = 20,
+                              width = 380, height = 280,
+                              wellPanel(
+                                 h3("Citi Bike Route"),
+                                
+                                 textInput("start", "Your Starting Point", value = NA, width = NULL, placeholder = NULL),
+                                 
+                                 textInput("destination", "Your Destination", value = NA, width = NULL, placeholder = NULL),
+                                 
+                                 actionButton("submit","Submit",icon = icon("refresh"))
+                              )
                               )
                 ),
         
