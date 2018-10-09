@@ -25,7 +25,9 @@ ui <-
                    menuSubItem("stations",tabName = "tStations"),
                    menuSubItem("crime", tabName = "tCrime")),
           
-          menuItem("Contact Us",tabName= "tContact",icon = icon("envelope"))
+          menuItem("Contact Us",tabName= "tContact",icon = icon("envelope")),
+          
+          menuItem("histogram",tabName= "histogram",icon = icon("envelope"))
         )
     ),
     dashboardBody(
@@ -76,7 +78,11 @@ ui <-
                 h5("Hongyu Ji: hj2475@columbia.edu"),
                 h5("Yunfan Li: yl3838@columbia.edu"),
                 h5("Di Lu: dl3152@columbia.edu"),
-                h5("Amon Tokoro: at3250@columbia.edu"))
+                h5("Amon Tokoro: at3250@columbia.edu")),
+        
+        tabItem("histogram", rglwidgetOutput("histplot"))
+                
+        
       )
     )
   )

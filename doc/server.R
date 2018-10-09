@@ -3,12 +3,11 @@ packages <- c("shiny",
               "leaflet", 
               "rgdal", 
               "chron", 
-              "leaflet.extras",
-              "htmltools",
-              "htmlwidgets")
+              "leaflet.extras")
 
 source("../lib/dataFormat.R")
 source("../lib/routing.R")
+source("../lib/3Dhist.R")
 
 # Install and load packages only if needed
 package.check <- lapply(packages, FUN = function(x) {
@@ -54,16 +53,6 @@ for(i in 1:l){
 # station with bikes, docks and all.
 c <- dataFormat(s)
 
-# ##  Create cuts:
-# x_c <- cut(s$lat, 60)
-# y_c <- cut(s$lng, 60)
-# 
-# ##  Calculate joint counts at cut levels:
-# z <- table(x_c, y_c)
-# 
-# library(plot3D)
-# 
-# hist3D(z = as.matrix(s))
 
 # street felonies in Manhattan
 crime.m <- subset(crime, crime$BORO_NM=="MANHATTAN")
@@ -148,5 +137,13 @@ shinyServer(function(input, output, session) {
   output$tableLive <- DT::renderDataTable({s})
   
   output$tableCrime <- DT::renderDataTable({crime})
+  
+  output$histplot <- renderRglwidget({
+    library(rgl)
+    rgl.open(useNULL=T)
+    hist3D_fancy(s$lng, s$lat, colvar=as.numeric(s$available),  breaks = 30)
+    plotrgl(new = F)
+    rglwidget()
+  })
   
 })
