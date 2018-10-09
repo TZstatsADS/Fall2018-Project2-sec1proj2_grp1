@@ -3,10 +3,16 @@ packages <- c("shiny",
               "leaflet", 
               "rgdal", 
               "chron", 
+<<<<<<< HEAD
               "leaflet.extras",
               "htmltools",
               "htmlwidgets")
 
+=======
+              "leaflet.extras")
+source("../lib/dataFormat.R")
+source("../lib/routing.R")
+>>>>>>> 9a142d7c6d0db19f2be07a35b4f5934e50f33fd7
 
 # Install and load packages only if needed
 package.check <- lapply(packages, FUN = function(x) {
@@ -37,7 +43,6 @@ markers <- lapply(pics,  function(x) makeIcon(x, iconHeight = 3))
 class(markers) <- "leaflet_icon_set"
 
 
-
 ## data handling
 
 # stations
@@ -47,7 +52,11 @@ for(i in 1:l){
   s$lat[i] <- stations$data$stations[i][[1]]$lat
   s$lng[i] <- stations$data$stations[i][[1]]$lon
   s$available[i] <- live$data$stations[i][[1]]$num_bikes_available
+  s$capacity <- stations$data$stations[i][[1]]$capacity
 }
+# Convert the dataframe to list of 3 dataframes representing the 
+# station with bikes, docks and all.
+c <- dataFormat(s)
 
 # ##  Create cuts:
 # x_c <- cut(s$lat, 60)
@@ -85,7 +94,7 @@ c3 <- subset(c.street, c.street$t=="evening")
 c4 <- subset(c.street, c.street$t=="night")
 
 # Define server logic required to draw a histogram
-shinyServer(function(input, output,session) {
+shinyServer(function(input, output, session) {
   
   output$map <- renderLeaflet({
 
@@ -121,6 +130,20 @@ shinyServer(function(input, output,session) {
       hideGroup(c("bike routes", "crimes - morning", "crimes - afternoon","crimes - evening",'crimes - night', "rain radar"))
 
   })
+  
+  routing_config = reactive({
+    start = input$start
+    destination = input$destination
+    submit = input$submit
+    return(list(start = start, destination = destination, submit = submit))
+  })
+  
+  observe(
+    if(input$submit[1] > 0){
+      leafletProxy("map") %>% 
+        routing(strt = input$start, dstn = input$destination, c = c)
+    }
+  )
   
   output$tableLive <- DT::renderDataTable({live})
   
