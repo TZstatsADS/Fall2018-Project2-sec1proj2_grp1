@@ -1,6 +1,4 @@
 library(mapsapi)
-library(xml2)
-library(leaflet)
 source("../lib/calculateDistance.R")
 
 time_to_text = function(t){
@@ -79,18 +77,22 @@ routing <- function(map, strt, dstn, c, key="AIzaSyD1wa1olHRXPNPo7_6zEyZvU2xSZxG
   )
   map = map %>% 
     addPolylines(data = p_r, opacity = 1, weight = 5, 
-                 color = ~pal_pickup(alternative_id), popup = ~instructions, dashArray = "9") %>%
+                 color = ~pal_pickup(alternative_id), popup = ~instructions, dashArray = "9", group = "routing") %>%
     addPolylines(data = pd_r, opacity = 1, weight = 5, 
-                 color = ~pal_bicycling(alternative_id), popup = ~instructions) %>%
+                 color = ~pal_bicycling(alternative_id), popup = ~instructions, group = "routing") %>%
     addPolylines(data = d_r, opacity = 1, weight = 5, 
-                 color = ~pal_dropoff(alternative_id), popup = ~instructions, dashArray = "9") %>%
-    addMarkers(data = pnt, popup = ~address_google, icon = ~seIcons[id]) %>%
+                 color = ~pal_dropoff(alternative_id), popup = ~instructions, dashArray = "9", group = "routing") %>%
+    addMarkers(data = pnt, popup = ~address_google, icon = ~seIcons[id], group = "routing") %>%
     addMarkers(lng = c(pickup[1], dropoff[1]), lat = c(pickup[2], dropoff[2]), 
-               popup = c("Pickup your citibike here!", "Dropoff your citibike here!"), icon = bicon) %>%
-    addMarkers(data = pnt$pnt[2], 
-      label = paste("Walking time:", time_walk,
-                    "Bicycling time:", time_bike),
-      labelOptions = labelOptions(noHide = T, direction = "bottom")
-      )
+               popup = c("Pickup your citibike here!", "Dropoff your citibike here!"), icon = bicon, group = "routing") %>%
+    #addMarkers(data = pnt$pnt[2], 
+    #  label = paste("Walking time:", time_walk,
+    #                "Bicycling time:", time_bike),
+    #  labelOptions = labelOptions(noHide = T, direction = "bottom"), group = "routing"
+    #  )
+    addPopups(data = pnt$pnt[2],
+              popup = paste("Walking time:", time_walk,
+                            "Bicycling time:", time_bike),
+              options = popupOptions(noHide = TRUE, direction = "bottom"))
   return(map)
 }

@@ -86,8 +86,9 @@ shinyServer(function(input, output, session) {
     s %>% 
       leaflet() %>%
       addProviderTiles(providers$Stamen.Toner) %>%
-      addMarkers(icon=~markers[s$available + 1]
-                 , clusterOptions = markerClusterOptions()
+      addMarkers(icon=~markers[s$available + 1],
+                 clusterOptions = markerClusterOptions(),
+                 group = "station info"
                  ) %>%
       addPolygons(data=routes, weight=1, col = 'green', 
                   smoothFactor = 1000, group = "bike routes",
@@ -102,7 +103,7 @@ shinyServer(function(input, output, session) {
       # )%>%
       addLayersControl(
         baseGroups = c("crimes - morning", "crimes - afternoon","crimes - evening",'crimes - night'),
-        overlayGroups = c("bike routes"
+        overlayGroups = c("bike routes", "station info", "routing"
                           # , "rain radar"
                           ),
         options = layersControlOptions(collapsed = FALSE)) %>%
@@ -119,22 +120,19 @@ shinyServer(function(input, output, session) {
                   ))
 
   })
-  
-  routing_config = reactive({
-    start = input$start
-    destination = input$destination
-    submit = input$submit
-    return(list(start = start, destination = destination, submit = submit))
+
+  observeEvent(input$submit, {
+    leafletProxy("map") %>% 
+      #clearMarkers() %>%
+      clearGroup("routing") %>%
+      routing(strt = input$start, dstn = input$destination, c = c)
   })
   
-  observe(
-    if(input$submit[1] > 0){
-      leafletProxy("map") %>% 
-        routing(strt = input$start, dstn = input$destination, c = c)
-    }
-  )
+  output$tableLive <- DT::renderDataTable({live})
   
-  output$tableLive <- DT::renderDataTable({s})
+  output$tableStations <- DT::renderDataTable({stations})
+  
+  #output$tableLive <- DT::renderDataTable({s})
   
   output$tableCrime <- DT::renderDataTable({crime})
   
