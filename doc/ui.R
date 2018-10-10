@@ -1,16 +1,3 @@
-<<<<<<< HEAD
-=======
-# packages <- c("shiny", 
-#               "shinydashboard", 
-#               "leaflet", 
-#               "DT",
-#               "rgl")
-# 
-# package.check <- lapply(packages, FUN = function(x) 
-# {library(x, character.only = T)})
-library(shinyalert)
-
->>>>>>> 65211626132f227eefb088834a5cbddf993003da
 ui <- 
   dashboardPage(skin = "black",
     dashboardHeader(title = "Citi Bike Maps"),

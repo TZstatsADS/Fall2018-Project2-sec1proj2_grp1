@@ -70,10 +70,11 @@ routing <- function(map, strt, dstn, c, key="AIzaSyD1wa1olHRXPNPo7_6zEyZvU2xSZxG
   pal_pickup = colorFactor(palette = "Dark2", domain = p_r$alternative_id)
   pal_bicycling = colorFactor(palette = "Dark2", domain = pd_r$alternative_id)
   pal_dropoff = colorFactor(palette = "Dark2", domain = d_r$alternative_id)
-  bicon = makeIcon(iconUrl = "../data/bicycle.svg", iconWidth = 30, iconHeight = 30)
+  #bicon = makeIcon(iconUrl = "../data/bicycle.svg", iconWidth = 30, iconHeight = 30) 
+  bicon = makeIcon(iconUrl = "https://image.flaticon.com/icons/svg/1183/1183369.svg", iconWidth = 30, iconHeight = 30)
   seIcons <- iconList(
-    s = makeIcon("../data/start.svg", 30, 30),
-    e = makeIcon("../data/end.svg", 30, 30)
+    s = makeIcon("https://image.flaticon.com/icons/svg/776/776537.svg", 30, 30),
+    e = makeIcon("https://image.flaticon.com/icons/svg/901/901924.svg", 30, 30)
   )
   map = map %>% 
     addPolylines(data = p_r, opacity = 1, weight = 5, 
@@ -93,6 +94,6 @@ routing <- function(map, strt, dstn, c, key="AIzaSyD1wa1olHRXPNPo7_6zEyZvU2xSZxG
     addPopups(data = pnt$pnt[2],
               popup = paste("Walking time:", time_walk,
                             "Bicycling time:", time_bike),
-              options = popupOptions(noHide = TRUE, direction = "bottom"))
+              options = popupOptions(noHide = TRUE, direction = "bottom"), group = "routing")
   return(map)
 }

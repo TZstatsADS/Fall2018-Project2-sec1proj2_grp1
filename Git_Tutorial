@@ -1,6 +1,0 @@
-Change to the derictory you want to put the repo.
-`git clone ...`
-
-make your changes
-`git pull origin master` to pull the latest changes from the remote repo.
-`git push origin localbranch:remotebranch` to push your changes to remote repo.
