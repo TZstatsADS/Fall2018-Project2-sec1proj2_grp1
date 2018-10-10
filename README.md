@@ -29,12 +29,13 @@ Term: Spring 2018
 Following [suggestions](http://nicercode.github.io/blog/2013-04-05-projects/) by [RICH FITZJOHN](http://nicercode.github.io/about/#Team) (@richfitz). This folder is orgarnized as follows.
 
 ```
-proj/
-app/
-lib/
-data/
 doc/
-output/
+	proj/
+	app/
+	lib/
+	data/
+	figs/
+	output/
 ```
 
 Please see each subfolder for a README file.
