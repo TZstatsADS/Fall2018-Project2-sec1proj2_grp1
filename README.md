@@ -3,7 +3,7 @@
 ### [Project Description]
 
 
-In this second project of GR5243 Applied Data Science, we develop a version 2.0 of an *Exploratory Data Analysis and Visualization* shiny app regarding city bikes in New York. See [Green Life NYC](https://wct2112.shinyapps.io/greenlivingnewyork/) (focused on mapping) and [City Bike] (https://krozzzz.shinyapps.io/Final_vision/) (focused on routing, although the the functionality did not work as it was tried in September 2018) for the previous works on the same subject. 
+In this second project of GR5243 Applied Data Science, we develop a version 2.0 of an *Exploratory Data Analysis and Visualization* shiny app regarding citi bikes in New York. See [Green Life NYC](https://wct2112.shinyapps.io/greenlivingnewyork/) (focused on mapping) and [Citi Bike](https://krozzzz.shinyapps.io/Final_vision/) (focused on routing, although the the functionality did not work as it was tried in September 2018) for the previous works on the same subject. 
 
 ## Project BikeNY 
 Term: Spring 2018 [Our Citi Bike App](https://gabriben.shinyapps.io/work/)
