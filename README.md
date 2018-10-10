@@ -9,7 +9,7 @@ In this second project of GR5243 Applied Data Science, we develop a version 2.0 
 Term: Spring 2018 [Our Citi Bike App](https://gabriben.shinyapps.io/work/)
 
 + Team 1
-+ **Team Members **: 
++ Team Members: 
 	 + Gabriel Benedict: gb2661@columbia.edu
    + Hongyu Ji: hj2475@columbia.edu
    + Yunfan Li: yl3838@columbia.edu
