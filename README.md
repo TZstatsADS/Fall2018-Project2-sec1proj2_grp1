@@ -1,17 +1,16 @@
 # Project 2: Shiny App Development Version 2.0
 
-### [Project Description](doc/project2_desc.md)
+### [Project Description]
 
-![screenshot](doc/screenshot2.png)
 
-In this second project of GR5243 Applied Data Science, we develop a version 2.0 of an *Exploratory Data Analysis and Visualization* shiny app regarding city bikes in New York. See [Green Life NYC](https://wct2112.shinyapps.io/greenlivingnewyork/) (focussed on mapping) and [City Bike] (https://krozzzz.shinyapps.io/Final_vision/) (focussed on routing, although the the functionality did not work as it was tried in September 2018) for the previous works on the same subject. 
+In this second project of GR5243 Applied Data Science, we develop a version 2.0 of an *Exploratory Data Analysis and Visualization* shiny app regarding citi bikes in New York. See [Green Life NYC](https://wct2112.shinyapps.io/greenlivingnewyork/) (focused on mapping) and [Citi Bike](https://krozzzz.shinyapps.io/Final_vision/) (focused on routing, although the the functionality did not work as it was tried in September 2018) for the previous works on the same subject. 
 
 ## Project BikeNY 
-Term: Spring 2018
+Term: Spring 2018 [Our Citi Bike App](https://gabriben.shinyapps.io/work/)
 
-+ Team #
++ Team 1
 + **Projec title**: + Team members
-	 + Gabriel Benedict: gb2661@columbia.edu"
+	 + Gabriel Benedict: gb2661@columbia.edu
    + Hongyu Ji: hj2475@columbia.edu
    + Yunfan Li: yl3838@columbia.edu
    + Di Lu: dl3152@columbia.edu
@@ -30,12 +29,13 @@ Term: Spring 2018
 Following [suggestions](http://nicercode.github.io/blog/2013-04-05-projects/) by [RICH FITZJOHN](http://nicercode.github.io/about/#Team) (@richfitz). This folder is orgarnized as follows.
 
 ```
-proj/
-app/
-lib/
-data/
 doc/
-output/
+	proj/
+	app/
+	lib/
+	data/
+	figs/
+	output/
 ```
 
 Please see each subfolder for a README file.
