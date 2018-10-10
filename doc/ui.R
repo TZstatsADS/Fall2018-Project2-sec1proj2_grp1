@@ -22,7 +22,7 @@ ui <-
                    # menuSubItem("stations",tabName = "tStations"),
                    menuSubItem("crime 2018", tabName = "tCrime")),
           
-          menuItem("Contact Us",tabName= "tContact",icon = icon("envelope"))
+          menuItem("About",tabName= "tAbout",icon = icon("envelope"))
         )
     ),
     dashboardBody(
@@ -67,7 +67,15 @@ ui <-
                 fluidRow(column(12, DT::dataTableOutput("tableCrime")))
         ),
         
-        tabItem("tContact",
+        tabItem("tAbout",
+                h2("About Our App"),
+                h4("Our web app aims at optimizing decision making with regards to the usage of Citi Bike in New York.
+                   First, a routing utility is available, that allows users to enter their current location and a destination
+                   and be guided as to where to walk to the closest Citi Bike non-empty station and where to drop off at the
+                   non-full station closest to destination. Additionally, bike station availability, bike routes, the rain radar,
+                   the 3-D histogram representing the frequency of bike usage and the heat map corrspoinding with crime rate on the
+                   streets are available to allow users to further refine the routing."),
+                h5("  "),
                 h2("Contact Us"),
                 h4("We are group 1!"),
                 h5("Gabriel Benedict: gb2661@columbia.edu"),
