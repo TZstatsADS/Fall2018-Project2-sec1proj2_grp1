@@ -1,8 +1,7 @@
 # Project 2: Shiny App Development Version 2.0
 
-### [Project Description](doc/project2_desc.md)
+### [Project Description]
 
-![screenshot](doc/screenshot2.png)
 
 In this second project of GR5243 Applied Data Science, we develop a version 2.0 of an *Exploratory Data Analysis and Visualization* shiny app regarding city bikes in New York. See [Green Life NYC](https://wct2112.shinyapps.io/greenlivingnewyork/) (focussed on mapping) and [City Bike] (https://krozzzz.shinyapps.io/Final_vision/) (focussed on routing, although the the functionality did not work as it was tried in September 2018) for the previous works on the same subject. 
 
