@@ -1,32 +1,33 @@
-packages <- c("shiny", 
-              "rjson", 
-              "leaflet", 
-              "rgdal", 
-              "chron", 
-              "leaflet.extras")
+# packages <- c("shiny", 
+#               "shinydashboard",
+#               "rjson", 
+#               "leaflet", 
+#               "rgdal", 
+#               "chron", 
+#               "leaflet.extras",
+#               "rgl",
+#               "plot3Drgl")
+# 
+# package.check <- lapply(packages, FUN = function(x) 
+#   {library(x, character.only = T)})
 
-source("../lib/dataFormat.R")
-source("../lib/routing.R")
-source("../lib/3Dhist.R")
 
-# Install and load packages only if needed
-package.check <- lapply(packages, FUN = function(x) {
-  if (!require(x, character.only = T)) install.packages(x)
-  if (! (x %in% (.packages() )))  library(x, character.only = T)
-})
+source("./lib/dataFormat.R")
+source("./lib/routing.R")
+source("./lib/3Dhist.R")
 
 ## Data Import
 
 live <- fromJSON(file = "https://gbfs.citibikenyc.com/gbfs/en/station_status.json")
 stations <- fromJSON(file = "https://gbfs.citibikenyc.com/gbfs/en/station_information.json")
-load("../output/bikeRoutes.RData")
+load("./output/bikeRoutes.RData")
 
-crime <- read.csv("../data/NYPD.csv")
+crime <- read.csv("./data/NYPD.csv")
 
 ## markers
 
 # http://www.mapito.net/map-marker-icons.html
-pics <- list.files(path="../figs/numbers/mapiconscollection",pattern="*.png", full.names=T, recursive=FALSE)
+pics <- list.files(path="./figs/numbers/mapiconscollection",pattern="*.png", full.names=T, recursive=FALSE)
 
 begin <- as.numeric(as.matrix(gregexpr("_", pics)))
 endd <- as.numeric(as.matrix(gregexpr("\\.[^\\.]*$", pics)))
@@ -93,19 +94,17 @@ shinyServer(function(input, output, session) {
       addPolygons(data=routes, weight=1, col = 'green', 
                   smoothFactor = 1000, group = "bike routes",
                   opacity = 1, noClip = T) %>%
-      # addWMSTiles(
-      #   "http://mesonet.agron.iastate.edu/cgi-bin/wms/nexrad/n0r.cgi",
-      #   layers = "nexrad-n0r-900913",
-      #   options = WMSTileOptions(format = "image/png", transparent = TRUE),
-      #   attribution = "Weather data ?? 2012 IEM Nexrad",
-      #   group = "rain radar"
-      #   # make it transparanet
-      # )%>%
+      addWMSTiles(
+        "http://mesonet.agron.iastate.edu/cgi-bin/wms/nexrad/n0r.cgi",
+        layers = "nexrad-n0r-900913",
+        options = WMSTileOptions(format = "image/png", transparent = TRUE),
+        attribution = "Weather data 2012 IEM Nexrad",
+        group = "rain radar"
+        # make it transparanet
+      )%>%
       addLayersControl(
         baseGroups = c("crimes - morning", "crimes - afternoon","crimes - evening",'crimes - night'),
-        overlayGroups = c("bike routes", "station info", "routing"
-                          # , "rain radar"
-                          ),
+        overlayGroups = c("bike routes", "station info", "routing", "rain radar"),
         options = layersControlOptions(collapsed = FALSE)) %>%
       addWebGLHeatmap(data = c1, lng = ~Longitude, lat = ~Latitude, 
                       size = 700, opacity = 0.6, group = "crimes - morning") %>%
@@ -115,9 +114,7 @@ shinyServer(function(input, output, session) {
                       size = 700, opacity = 0.6, group = "crimes - evening") %>%
       addWebGLHeatmap(data = c4, lng = ~Longitude, lat = ~Latitude, 
                       size = 700, opacity = 0.6, group = "crimes - night") %>%
-      hideGroup(c("bike routes", "crimes - morning", "crimes - afternoon","crimes - evening",'crimes - night'
-                  # , "rain radar"
-                  ))
+      hideGroup(c("bike routes", "crimes - morning", "crimes - afternoon","crimes - evening",'crimes - night', "rain radar"))
 
   })
 
@@ -128,16 +125,13 @@ shinyServer(function(input, output, session) {
       routing(strt = input$start, dstn = input$destination, c = c)
   })
   
-  output$tableLive <- DT::renderDataTable({live})
+  output$tableLive <- DT::renderDataTable({s})
   
-  output$tableStations <- DT::renderDataTable({stations})
-  
-  #output$tableLive <- DT::renderDataTable({s})
+  # output$tableStations <- DT::renderDataTable({stations})
   
   output$tableCrime <- DT::renderDataTable({crime})
   
   output$histplot <- renderRglwidget({
-    library(rgl)
     rgl.open(useNULL=T)
     hist3D_fancy(s$lng, s$lat, colvar=as.numeric(s$available),  breaks = 30)
     plotrgl(new = F)

@@ -1,33 +1,28 @@
-packages <- c("shiny", 
-              "shinydashboard", 
-              "leaflet", 
-              "DT")
-
-# Install and load packages only if needed
-package.check <- lapply(packages, FUN = function(x) {
-  if (!require(x, character.only = T)) install.packages(x)
-  if (! (x %in% (.packages() )))  library(x, character.only = T)
-})
-
-
-
+# packages <- c("shiny", 
+#               "shinydashboard", 
+#               "leaflet", 
+#               "DT",
+#               "rgl")
+# 
+# package.check <- lapply(packages, FUN = function(x) 
+# {library(x, character.only = T)})
 
 ui <- 
-  dashboardPage(
+  dashboardPage(skin = "black",
     dashboardHeader(title = "City Bike Maps"),
     dashboardSidebar(
         sidebarMenu(
           menuItem("Maps",tabName = "tMaps",icon = icon("globe")),
-                   
+
+          menuItem("Usage Skyline",tabName= "histogram",icon = icon("stats", lib = "glyphicon")),
+                             
           menuItem("Data",
                    icon = icon("table"),
-                   menuSubItem("live", tabName = "tLive"),
-                   menuSubItem("stations",tabName = "tStations"),
-                   menuSubItem("crime", tabName = "tCrime")),
+                   menuSubItem("live stations", tabName = "tLive"),
+                   # menuSubItem("stations",tabName = "tStations"),
+                   menuSubItem("crime 2018", tabName = "tCrime")),
           
-          menuItem("Contact Us",tabName= "tContact",icon = icon("envelope")),
-          
-          menuItem("histogram",tabName= "histogram",icon = icon("envelope"))
+          menuItem("Contact Us",tabName= "tContact",icon = icon("envelope"))
         )
     ),
     dashboardBody(
@@ -54,19 +49,19 @@ ui <-
                 ),
         
         tabItem(tabName = "tLive",
-                # h4("Citybikenyc.com: "),
-                # h4("https://www.citibikenyc.com/system-data"),
-                # h4("FileURL: "),
-                # h4("https://gbfs.citibikenyc.com/gbfs/en/station_status.json")
-                fluidRow(column(12,DT::dataTableOutput("tableLive")))
-                ),
-       
-         tabItem(tabName = "tStations",
                 h4("Citybikenyc.com: "),
                 h4("https://www.citibikenyc.com/system-data"),
                 h4("FileURL: "),
-                h4("https://gbfs.citibikenyc.com/gbfs/en/station_information.json")
-        ),
+                h4("https://gbfs.citibikenyc.com/gbfs/en/station_status.json"),
+                fluidRow(column(12,DT::dataTableOutput("tableLive")))
+                ),
+       
+        #  tabItem(tabName = "tStations",
+        #         h4("Citybikenyc.com: "),
+        #         h4("https://www.citibikenyc.com/system-data"),
+        #         h4("FileURL: "),
+        #         h4("https://gbfs.citibikenyc.com/gbfs/en/station_information.json")
+        # ),
        
          tabItem(tabName = "tCrime",
                 fluidRow(column(12, DT::dataTableOutput("tableCrime")))
@@ -81,7 +76,9 @@ ui <-
                 h5("Di Lu: dl3152@columbia.edu"),
                 h5("Amon Tokoro: at3250@columbia.edu")),
         
-        tabItem("histogram", rglwidgetOutput("histplot"))
+        tabItem("histogram", 
+                tags$style(type = "text/css", "#histplot {height: calc(100vh - 80px) !important;}"),
+                rglwidgetOutput("histplot"))
                 
         
       )
