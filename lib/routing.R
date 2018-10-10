@@ -93,6 +93,6 @@ routing <- function(map, strt, dstn, c, key="AIzaSyD1wa1olHRXPNPo7_6zEyZvU2xSZxG
     addPopups(data = pnt$pnt[2],
               popup = paste("Walking time:", time_walk,
                             "Bicycling time:", time_bike),
-              options = popupOptions(noHide = TRUE, direction = "bottom"))
+              options = popupOptions(noHide = TRUE, direction = "bottom"), group = "routing")
   return(map)
 }

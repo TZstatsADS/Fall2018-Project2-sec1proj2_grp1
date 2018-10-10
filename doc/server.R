@@ -10,6 +10,7 @@
 # 
 # package.check <- lapply(packages, FUN = function(x) 
 #   {library(x, character.only = T)})
+library(shinyalert)
 
 
 source("./lib/dataFormat.R")
@@ -117,8 +118,15 @@ shinyServer(function(input, output, session) {
       hideGroup(c("bike routes", "crimes - morning", "crimes - afternoon","crimes - evening",'crimes - night', "rain radar"))
 
   })
-
-  observeEvent(input$submit, {
+  
+  observeEvent(input$go, {
+    shinyalert(title = "Analyzing...", 
+               type = "success",
+               text = "We are analyzing your request...",
+               showConfirmButton = FALSE, 
+               timer = 6000, 
+               animation = "slide-from-top"
+    )
     leafletProxy("map") %>% 
       #clearMarkers() %>%
       clearGroup("routing") %>%

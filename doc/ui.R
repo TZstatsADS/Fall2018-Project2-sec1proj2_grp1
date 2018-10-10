@@ -43,7 +43,7 @@ ui <-
                                  
                                  textInput("destination", "Your Destination", value = NA, width = NULL, placeholder = NULL),
                                  
-                                 actionButton("submit","Submit",icon = icon("refresh"))
+                                 actionButton("go","Go!",icon = icon("refresh"))
                               )
                               )
                 ),
@@ -82,6 +82,7 @@ ui <-
                 
         
       )
-    )
+    ),
+    useShinyalert()
   )
 
