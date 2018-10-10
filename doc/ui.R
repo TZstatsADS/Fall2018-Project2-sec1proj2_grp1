@@ -68,6 +68,7 @@ ui <-
         ),
         
         tabItem("tAbout",
+                img(src="citi-bike2.jpg",height='340',width='680'),
                 h2("About Our App"),
                 h4("Our web app aims at optimizing decision making with regards to the usage of Citi Bike in New York.
                    First, a routing utility is available, that allows users to enter their current location and a destination
