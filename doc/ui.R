@@ -6,6 +6,7 @@
 # 
 # package.check <- lapply(packages, FUN = function(x) 
 # {library(x, character.only = T)})
+library(shinyalert)
 
 ui <- 
   dashboardPage(skin = "black",
