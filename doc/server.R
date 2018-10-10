@@ -1,18 +1,3 @@
-# packages <- c("shiny", 
-#               "shinydashboard",
-#               "rjson", 
-#               "leaflet", 
-#               "rgdal", 
-#               "chron", 
-#               "leaflet.extras",
-#               "rgl",
-#               "plot3Drgl")
-# 
-# package.check <- lapply(packages, FUN = function(x) 
-#   {library(x, character.only = T)})
-library(shinyalert)
-
-
 source("./lib/dataFormat.R")
 source("./lib/routing.R")
 source("./lib/3Dhist.R")
@@ -22,6 +7,7 @@ source("./lib/3Dhist.R")
 live <- fromJSON(file = "https://gbfs.citibikenyc.com/gbfs/en/station_status.json")
 stations <- fromJSON(file = "https://gbfs.citibikenyc.com/gbfs/en/station_information.json")
 load("./output/bikeRoutes.RData")
+load("./output/historicalData.RData")
 
 crime <- read.csv("./data/NYPD.csv")
 
@@ -140,9 +126,21 @@ shinyServer(function(input, output, session) {
   output$tableCrime <- DT::renderDataTable({crime})
   
   output$histplot <- renderRglwidget({
+    dPlot <- subset(dByTime, band == intervals[input$bins])
+    
+    dPlotPlot <- dPlot %>% group_by(lonBins, latBins) %>% dplyr::summarize(sum(n))
+    
+    plotMatrix <- spread(dPlotPlot, key = latBins, value = `sum(n)`, fill = 0)
+    plotMatrix <- as.data.frame(plotMatrix)
+    rownames(plotMatrix) <- plotMatrix$lonBins
+    plotMatrix <- plotMatrix[,-1]
+    plotMatrix <- as.matrix(plotMatrix)
+    
     rgl.open(useNULL=T)
-    hist3D_fancy(s$lng, s$lat, colvar=as.numeric(s$available),  breaks = 30)
-    plotrgl(new = F)
+    # hist3D_fancy(s$lng, s$lat, colvar=as.numeric(s$available),  breaks = 30)
+    hist3D(z = plotMatrix, bty = "n", col = "white", 
+           border = "black", colvar = NULL, shade = 0.2)
+    plotrgl(new = F, lighting = T)
     rglwidget()
   })
   

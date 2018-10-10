@@ -5,9 +5,9 @@ account: gabriben
 server: shinyapps.io
 hostUrl: https://api.shinyapps.io/v1
 appId: 503965
-bundleId: 1633580
+bundleId: 1635208
 url: https://gabriben.shinyapps.io/work/
-when: 1539143201.35708
+when: 1539198402.66096
 asMultiple: FALSE
 asStatic: FALSE
 ignoredFiles: references/.DS_Store|references/Tutorial2.RMD|references/Tutorial2.html|references/a_note_on_contributions.md|references/project2_desc.md|references/screenshot1.png|references/screenshot2.png|references/figs/code_plot_housing_sales-1.png|references/figs/code_plot_indiv-1.png

@@ -1,15 +1,6 @@
-# packages <- c("shiny", 
-#               "shinydashboard", 
-#               "leaflet", 
-#               "DT",
-#               "rgl")
-# 
-# package.check <- lapply(packages, FUN = function(x) 
-# {library(x, character.only = T)})
-
 ui <- 
   dashboardPage(skin = "black",
-    dashboardHeader(title = "City Bike Maps"),
+    dashboardHeader(title = "Citi Bike Maps"),
     dashboardSidebar(
         sidebarMenu(
           menuItem("Maps",tabName = "tMaps",icon = icon("globe")),
@@ -77,8 +68,25 @@ ui <-
                 h5("Amon Tokoro: at3250@columbia.edu")),
         
         tabItem("histogram", 
-                tags$style(type = "text/css", "#histplot {height: calc(100vh - 80px) !important;}"),
-                rglwidgetOutput("histplot"))
+                h2("Frequency of bike usage for an average day in 2018"),
+                sidebarLayout(
+                  
+                  sidebarPanel(
+                    sliderInput("bins",
+                                "day time",
+                                min = 1,
+                                max = 24,
+                                value = 12)
+                  ),
+                  
+                  # Show a plot of the generated distribution
+                  mainPanel(width = 12,
+                    h3(textOutput("Frequency of bike usage for an average day in 2018")),
+                    tags$style(type = "text/css", "#histplot {height: calc(100vh - 80px) !important;}"),
+                    rglwidgetOutput("histplot")
+                  )
+                )
+                )
                 
         
       )
