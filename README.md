@@ -17,9 +17,9 @@ Term: Spring 2018
    + Di Lu: dl3152@columbia.edu
    + Amon Tokoro: at3250@columbia.edu
 
-+ **Project summary**: The web app aims at optimizing decision making with regards to the usage of City Bike in New York. First a routing utility is available, that allows users to enter an address and a destination and be guided as to where to walk to the closest City Bike non-empty station and where to drop off at the non-full station closest to destination. Additionally, live bike station data, bike routes, a rain radar and a heat map of the amount of felonies on the streets are available to allow the user to further refine her routing.
++ **Project summary**: Our web app aims at optimizing decision making with regards to the usage of Citi Bike in New York. First, a routing utility is available, that allows users to enter their current location and a destination and be guided as to where to walk to the closest Citi Bike non-empty station and where to drop off at the non-full station closest to destination. Additionally, bike station availability, bike routes, the rain radar, the 3-D histogram representing the frequency of bike usage and the heat map corrspoinding with crime rate on the streets are available to allow users to further refine the routing.
 
-  The data is available at the followingg links:
+  The data is available at the following links:
   + [live Citybike station data](https://www.citibikenyc.com/system-data)
   + [NYC bike routes](http://www.nyc.gov/html/dot/html/about/datafeeds.shtml)
   + [live rain data](http://mesonet.agron.iastate.edu)
